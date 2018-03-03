@@ -2,19 +2,15 @@ const log = require('./log');
 const safeExit = require('./utils/safe-exit');
 const taskLedger = require('./tasks-ledger');
 
-safeExit.exit(1, taskLedger.completePending);
-
 process.on('uncaughtException', err => {
-
   const message = err.message || 'unknown error';
   log.error('Uncaught exception, shutting down the worker: ' + message);
   log.error(err);
-
   safeExit.exit(1, taskLedger.completePending);
 });
 
 process.on('unhandledRejection', err => {
-  log.error('UNHANDLED REJECTION', err.stack);
+  log.error('Unhandled rejection', err.stack);
 });
 
 process.on('SIGINT', () => {
