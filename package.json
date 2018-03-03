@@ -1,0 +1,19 @@
+{
+  "name": "postman",
+  "version": "1.0.0",
+  "description": "Sends emails reliably (supports failover) using services such as Sendgrid and Mailgun",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nmjmdr/postman.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nmjmdr/postman/issues"
+  },
+  "homepage": "https://github.com/nmjmdr/postman#readme"
+}
