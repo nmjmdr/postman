@@ -1,12 +1,11 @@
 const log = require('./log');
-const safeExit = require('./utils/safe-exit');
-const taskLedger = require('./tasks-ledger');
+const mailer = require('./send-mails');
 
 process.on('uncaughtException', err => {
   const message = err.message || 'unknown error';
   log.error('Uncaught exception, shutting down the worker: ' + message);
   log.error(err);
-  safeExit.exit(1, taskLedger.completePending);
+  mailer.safeExit(1);
 });
 
 process.on('unhandledRejection', err => {
@@ -15,10 +14,12 @@ process.on('unhandledRejection', err => {
 
 process.on('SIGINT', () => {
   log.warn('SIGINT (Ctrl-C) received');
-  safeExit.exit(0, taskLedger.completePending);
+  mailer.safeExit(0);
 });
 
 process.on('SIGTERM', () => {
   log.warn('SIGTERM received');
-  safeExit.exit(0, taskLedger.completePending);
+  mailer.safeExit(0);
 });
+
+mailer.work();
