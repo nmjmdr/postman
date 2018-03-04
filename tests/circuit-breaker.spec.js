@@ -81,7 +81,7 @@ describe('Given circuit-breaker',()=>{
     describe('When set a prove policy to try primary',()=>{
       describe('Then invoked, with primary having errors',()=>{
         describe('Then for subsquent invocations',()=>{
-          it('Should try invoking the primary',()=>{
+          it('Should try invoking the primary when the probe policy asks to probe primary',()=>{
             const primaryReturn = 100;
             const secondaryReturn = 200;
             let calls = 0;
@@ -112,6 +112,39 @@ describe('Given circuit-breaker',()=>{
             }));
 
             return Promise.all(promises);
+          })
+        });
+      });
+    });
+
+    describe('When set a prove policy to try primary',()=>{
+      describe('Then invoked, with primary having errors',()=>{
+        describe('Then for subsquent invocations',()=>{
+          describe('Then it should probe primary and when it still fails',()=>{
+            it('Should invoke the secondary',()=>{
+              const primaryReturn = 100;
+              const secondaryReturn = 200;
+              const primary = sandbox.stub().returns(Promise.reject('Error'));
+              const secondary = sandbox.stub().returns(Promise.resolve(secondaryReturn));
+              const cb = circuitbreaker.create(primary, secondary, (stats)=>{
+                return stats.callsToSecondary > 1;
+              });
+
+              let promises = [];
+              promises.push(cb([1])
+              .then((r)=>{
+                expect(r.result).to.be.equal(secondaryReturn);
+                expect(r.invoked).to.be.equal(secondary);
+              }));
+
+              promises.push(cb([1])
+              .then((r)=>{
+                expect(r.result).to.be.equal(secondaryReturn);
+                expect(r.invoked).to.be.equal(secondary);
+              }));
+
+              return Promise.all(promises);
+            })
           })
         });
       });
