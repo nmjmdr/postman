@@ -1,3 +1,10 @@
 {
-  "queue-type": "simulated-sqs"
+  "worker": {
+    "queue-type": "simulated-sqs"
+  },
+
+  "api": {
+    "port": 8901,
+    "name": "send-mail-api"
+  }
 }
