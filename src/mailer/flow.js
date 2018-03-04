@@ -48,7 +48,10 @@ function create(dependencies) {
     .then(()=>deleteMail(mail))
     .then(()=>gaurd.end());
   }
-  return process;
+
+  return {
+    process: process
+  };
 }
 
 module.exports = {
