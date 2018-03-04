@@ -6,16 +6,6 @@ function create(dependencies) {
   const ledger = dependencies.ledger;
   const gaurd = dependencies.gaurd;
 
-  function processMail(mail) {
-    return ledger.get(mail)
-    .then((record)=>{
-      if(record) {
-        log.info('Mail already sent by a worker; deleting the mail');
-        return deleteMail(mail)
-      }
-      return sendMail(mail);
-    });
-  }
 
   function process(assignedTo) {
     return queue.read(assignedTo)
@@ -26,6 +16,17 @@ function create(dependencies) {
       }
       return processMail(message);
     })
+  }
+
+  function processMail(mail) {
+    return ledger.get(mail)
+    .then((record)=>{
+      if(record && record.sent) {
+        log.info('Mail already sent by a worker; deleting the mail');
+        return deleteMail(mail)
+      } 
+      return sendMail(mail);
+    });
   }
 
   function deleteMail(mail) {
