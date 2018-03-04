@@ -1,5 +1,5 @@
 const log = require('./log');
-const mailer = require('./send-mails');
+const mailer = require('./mailer');
 
 process.on('uncaughtException', err => {
   const message = err.message || 'unknown error';
