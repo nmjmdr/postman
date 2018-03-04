@@ -17,8 +17,8 @@ function create(dependencies) {
     });
   }
 
-  function process() {
-    return queue.read()
+  function process(assignedTo) {
+    return queue.read(assignedTo)
     .then((message)=>{
       if(!message) {
         log.debug('No messages to process, returning');

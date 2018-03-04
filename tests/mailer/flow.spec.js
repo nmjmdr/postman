@@ -3,6 +3,8 @@ const expect = chai.expect;
 const sinon = require('sinon');
 const mailFlow = require('../../src/mailer/flow');
 
+const assignedTo = 'test-worker';
+
 function getStanardDependencies(sandbox) {
   return {
       queue: {
@@ -36,9 +38,10 @@ describe('Given that the mail process flow is created',()=>{
         let dependencies = getStanardDependencies(sandbox);
         dependencies.queue.read.returns(Promise.resolve({ id: 123, message: 'mail'}));
         const flow = mailFlow.create(dependencies);
-        return flow.process()
+        return flow.process(assignedTo)
         .then((r)=>{
           expect(dependencies.queue.read.called).to.be.true;
+          expect(dependencies.queue.read.getCalls(0)[0].args[0]).to.be.equal(assignedTo);
         });
       });
 
@@ -46,7 +49,7 @@ describe('Given that the mail process flow is created',()=>{
         let dependencies = getStanardDependencies(sandbox);
         dependencies.queue.read.returns(Promise.resolve({ id: 123, message: 'mail'}));
         const flow = mailFlow.create(dependencies);
-        return flow.process()
+        return flow.process(assignedTo)
         .then((r)=>{
           expect(dependencies.ledger.get.called).to.be.true;
         });
@@ -56,7 +59,7 @@ describe('Given that the mail process flow is created',()=>{
         let dependencies = getStanardDependencies(sandbox);
         dependencies.queue.read.returns(Promise.resolve({ id: 123, message: 'mail'}));
         const flow = mailFlow.create(dependencies);
-        return flow.process()
+        return flow.process(assignedTo)
         .then((r)=>{
           expect(dependencies.gaurd.start.called).to.be.true;
           expect(dependencies.postbox.send.called).to.be.true;
@@ -72,7 +75,7 @@ describe('Given that the mail process flow is created',()=>{
           dependencies.queue.read.returns(Promise.resolve({ id: 123, message: 'mail'}));
           const flow = mailFlow.create(dependencies);
           dependencies.ledger.get.returns(Promise.resolve({ id: 123, message: 'mail'}));
-          return flow.process()
+          return flow.process(assignedTo)
           .then((r)=>{
             expect(dependencies.ledger.get.called).to.be.true;
             expect(dependencies.postbox.send.called).to.be.false;
@@ -89,7 +92,7 @@ describe('Given that the mail process flow is created',()=>{
         let dependencies = getStanardDependencies(sandbox);
         dependencies.queue.read.returns(Promise.resolve(null));
         const flow = mailFlow.create(dependencies);
-        return flow.process()
+        return flow.process(assignedTo)
         .then((r)=>{
           expect(dependencies.queue.read.called).to.be.true;
           expect(dependencies.postbox.send.called).to.be.false;
