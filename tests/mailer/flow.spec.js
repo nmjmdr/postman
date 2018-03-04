@@ -74,7 +74,7 @@ describe('Given that the mail process flow is created',()=>{
           let dependencies = getStanardDependencies(sandbox);
           dependencies.queue.read.returns(Promise.resolve({ id: 123, message: 'mail'}));
           const flow = mailFlow.create(dependencies);
-          dependencies.ledger.get.returns(Promise.resolve({ id: 123, message: 'mail'}));
+          dependencies.ledger.get.returns(Promise.resolve({ id: 123, message: 'mail', sent: true}));
           return flow.process(assignedTo)
           .then((r)=>{
             expect(dependencies.ledger.get.called).to.be.true;
