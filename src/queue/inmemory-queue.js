@@ -1,3 +1,4 @@
+// naive - in memory queue, only use to test
 let map = {}
 
 function setVisiblityTimer(item, timeout) {
@@ -16,8 +17,7 @@ function curry(queue) {
     });
     item.assignedTo = assignedTo;
     setVisiblityTimer(item, queue.visiblityTimeout);
-    //return Promise.resolve(item);
-    return item;
+    return Promise.resolve(item);
   }
 
   function deleteItem(item) {
@@ -27,14 +27,12 @@ function curry(queue) {
     queue.buffer = queue.buffer.filter((item)=>{
       return item.id == itemToDelete.id
     });
-    //return Promise.resolve(true);
-    return true;
+    return Promise.resolve(true);
   }
 
   function add(item) {
     queue.buffer.push(item);
-    //return Promise.resolve(true);
-    return true;
+    return Promise.resolve(true);
   }
 
   return {
