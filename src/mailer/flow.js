@@ -6,7 +6,6 @@ function create(dependencies) {
   const ledger = dependencies.ledger;
   const gaurd = dependencies.gaurd;
 
-
   function process(assignedTo) {
     return queue.read(assignedTo)
     .then((message)=>{
@@ -24,7 +23,7 @@ function create(dependencies) {
       if(record && record.sent) {
         log.info('Mail already sent by a worker; deleting the mail');
         return deleteMail(mail)
-      } 
+      }
       return sendMail(mail);
     });
   }
@@ -44,7 +43,7 @@ function create(dependencies) {
       if(!receipt.ok) {
         log.error('Postbox could not send mail');
       }
-      return ledger.record(mail);
+      return ledger.record({id: mail.id, message: mail.message, sent: true});
     })
     .then(()=>deleteMail(mail))
     .then(()=>gaurd.end());
