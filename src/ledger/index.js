@@ -1,8 +1,12 @@
+function record() {
+  return Promise.resolve(true);
+}
+
+function get() {
+  return Promise.resolve(false);
+}
+
 module.exports = {
-  record: (r)=>{
-    return Promise.resolve(true);
-  },
-  get: ()=>{
-    return Promise.resolve(false);
-  }
+  record: record,
+  get: get
 }
