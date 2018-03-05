@@ -20,7 +20,7 @@ It should be possible encapsuatle the core functionalities in such way that it i
 A side effect of this goal, is that it should be possible to easily run and debug the application locally.
 
 ### Design
-
+![Design](https://raw.githubusercontent.com/nmjmdr/postman/master/screenshots/Design.png)
 
 
 ### Topics to explore further:
