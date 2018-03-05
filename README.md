@@ -19,8 +19,12 @@ It should be possible to horizontally scale the service by adding more instances
 It should be possible encapsuatle the core functionalities in such way that it if we required we can deploy the service on AWS, Google Cloud, in data centers.
 A side effect of this goal, is that it should be possible to easily run and debug the application locally.
 
-Topics to explore further:
-1. Multi queues
+### Design
+
+
+
+### Topics to explore further:
+1. Multi queues to scale the queue (http://arxiv.org/pdf/1411.1209.pdf)
 2. Extending circuit breaker to monitor the health of worker
 3. Distributed config management - such as Zookeeper
 4. Potential use of proxy to determine if a mail has already been sent
