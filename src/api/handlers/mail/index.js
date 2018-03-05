@@ -10,7 +10,7 @@ function sendMail(req, res, next) {
   }
   // start processing,
   // it should return some unique id with which the errors can be tracked later
-  // now it should b queued for processing
+  // it should be queued for processing
   res.send(200, {
     ok: true
   });
