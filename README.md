@@ -23,11 +23,21 @@ A side effect of this goal, is that it should be possible to easily run and debu
 ![Design](https://raw.githubusercontent.com/nmjmdr/postman/master/screenshots/Design.png)
 
 #### Core Idea
+```
 1. The code idea is to have a set of workers fetch mails that need to delivered and pass them the providers. 
-2. In case the worker faces an issue sending the mail one provider, it needs to use an alternative.
-      2.a. If an error has occured recently in using a provider, there is a very good probablity that it might continue to fail for the next few calls.
+2. In case the worker faces an issue sending the mail one provider (let us call it the primary), it needs to use an alternative (let us call it the secondary).
+      2.a. If an error has occured recently in using a provider (say provider A), there is a very good probablity that it might continue to fail for the next few calls.
       2.b Thus it is essential for the worker to continue to use the provider that works currently. 
-      2.c. It could try and attempt 
+      2.c. It could try and see if the error (for provider A) is now resolved
+      2.d If yes, it can move to using provider A
+3. The workers can randomly select a provider as primary and other provider as secondary. This way there would be a good distribution of providers being used across workers.
+```
+
+_Point 2 calls for the use of circuit breaker_. The solution includes a circuit breaker that can accomplish Point 2. It also includes a customizable functionality (injected as functions) to determine:
+1. When the probe (an attempt to see if the error is now resolved) should be carried out
+2. Determine if an encountered error is due to provider or something else (most commonly input errors)
+
+
 
 
 ### Topics to explore further:
