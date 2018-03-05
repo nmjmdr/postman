@@ -1,4 +1,3 @@
-
 const queueFactory = require('./queue/factory');
 const postbox = require('./mailer/postbox');
 const fakeProviderFactory = require('./providers/fake-provider-factory');
@@ -8,7 +7,7 @@ const singleProcBench = require('./single-process-api-worker');
 const configuration = {
   queue: queueFactory.get(config.queue),
   postbox: postbox.create(fakeProviderFactory('Fake Provider *Lamda', 2),fakeProviderFactory('Fake Provider *Delta', 2)),
-  ledger:  require('./ledger/no-store-ledger'),
+  ledger:  require('./ledger/no-store-ledger').create(),
   schedule: 5000,
   workerId: 'single-worker'
 }
