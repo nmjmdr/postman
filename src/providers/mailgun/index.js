@@ -4,7 +4,7 @@ function create(apiKey, domain) {
   const mailgun = require('mailgun-js')({apiKey: apiKey, domain: domain});
   function send(mail) {
     const mgMail = toMgMail(mail);
-    return Promise((resolve, reject)=>{
+    return new Promise((resolve, reject)=>{
       mailgun.messages().send(mgMail, (error, body)=>{
         if(error) {
           reject(error);
@@ -14,6 +14,7 @@ function create(apiKey, domain) {
         return;
       });
     });
+
   }
 
   function isUnavailableError(err) {
