@@ -1,7 +1,7 @@
-const idgenLib = require('../../utils/id-gen');
-const apiConfig = require('../../../config').api;
-const datacentreId = api? api['data-centre-id'] : null;
-const apiInstanceId = api? api['api-instance-id'] : null;
+const idgenLib = require('../../../utils/id-gen');
+const apiConfig = require('../../../../config').api;
+const datacentreId = apiConfig? apiConfig['data-centre-id'] : null;
+const apiInstanceId = apiConfig? apiConfig['api-instance-id'] : null;
 const idgen = idgenLib.create(datacentreId, apiInstanceId);
 
 function create(queue) {
@@ -14,12 +14,16 @@ function create(queue) {
       mail.id = idgen.nextId();
       acc.promises.push(queue.add(mail));
       acc.ids.push(mail.id);
+      return acc;
     },{ promises:[], ids: [] });
 
     return Promise.all(accumaltor.promises)
     .then(()=>{
       return accumaltor.ids;
     });
+  }
+  return {
+    deliver: deliver
   }
 }
 
