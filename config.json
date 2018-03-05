@@ -1,0 +1,24 @@
+{
+  "queue": {
+    "name": "mail-queue",
+    "type": "inmemory-queue",
+    "visiblityTimeout": 4000
+  },
+
+  "api": {
+    "port": 8901,
+    "name": "send-mail-api",
+    "apiInstanceId": 1
+  },
+
+  "providers": {
+    "mailgun": {
+      "baseUrl": "https://api.mailgun.net/v3/",
+      "domain": "sandboxfafaad9efc0c422eb9743d99f116d3d4.mailgun.org"
+    },
+
+    "sendgrid": {
+      "url": "https://api.sendgrid.com/v3/mail/send"
+    }
+  }
+}
