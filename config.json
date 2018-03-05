@@ -5,6 +5,7 @@
 
   "api": {
     "port": 8901,
-    "name": "send-mail-api"
+    "name": "send-mail-api",
+    "api-instance-id": 1
   }
 }

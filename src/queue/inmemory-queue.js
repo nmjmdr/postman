@@ -1,5 +1,5 @@
 // naive - in memory queue, only use to test
-let map = {}
+let map = {};
 
 function setVisiblityTimer(item, timeout) {
   setTimeout(()=>{
@@ -9,25 +9,33 @@ function setVisiblityTimer(item, timeout) {
 
 function curry(queue) {
   function read(assignedTo) {
-    if(queue.buffer.length === 0) {
-      return null;
+    if(!assignedTo) {
+      throw new Error("assignedTo cannot be empty")
     }
+
     const item = queue.buffer.find((item)=>{
       return !item.assignedTo
     });
+
+    if(!item) {
+      return null;
+    }
+
     item.assignedTo = assignedTo;
     setVisiblityTimer(item, queue.visiblityTimeout);
     return Promise.resolve(item);
   }
 
-  function deleteItem(item) {
+  function deleteItem(itemId, workerId) {
     if(queue.buffer.length === 0) {
       return Promise.resolve(true);
     }
+    const lenBefore = queue.buffer.length;
     queue.buffer = queue.buffer.filter((item)=>{
-      return item.id == itemToDelete.id
+       return !(item.id === itemId && item.assignedTo === workerId);
     });
-    return Promise.resolve(true);
+    const lenAfter = queue.buffer.length;
+    return Promise.resolve(lenAfter < lenBefore);
   }
 
   function add(item) {
@@ -59,7 +67,12 @@ function get(queueName) {
   return curry(map[queueName]);
 }
 
+function clearAll() {
+  map = {};
+}
+
 module.exports = {
   create: create,
-  get: get
+  get: get,
+  clearAll: clearAll
 }
