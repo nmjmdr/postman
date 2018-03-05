@@ -1,5 +1,7 @@
 const validator = require('./validator');
-
+const queueFactory = require('../../../queue/factory');
+const config = require('../../../../config');
+const service = require('../../services/mail');
 
 function sendMail(req, res, next) {
   const errors = validator.validate(req.body);
@@ -8,13 +10,16 @@ function sendMail(req, res, next) {
     next(false);
     return;
   }
-  // start processing,
-  // it should return some unique id with which the errors can be tracked later
-  // it should be queued for processing
-  res.send(200, {
-    ok: true
+  const queue = queueFactory.get(config.queue);
+  const mailer = service.create(queue);
+  mailer.deliver(req.body)
+  .then((ids)=>{
+    res.send(200, {
+      "queued": true,
+      "tracking-ids": ids
+    });
+    next();
   });
-  next();
 }
 
 module.exports = sendMail;
