@@ -5,7 +5,7 @@ function create(apiKey, domain) {
   function send(mail) {
     const mgMail = toMgMail(mail);
     return Promise((resolve, reject)=>{
-      mailgun.messages().send(mgMail, function (error, body) {
+      mailgun.messages().send(mgMail, (error, body)=>{
         if(error) {
           reject(error);
           return;
