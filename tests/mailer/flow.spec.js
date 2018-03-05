@@ -17,8 +17,8 @@ function getStanardDependencies(sandbox) {
         waitForPending: sandbox.stub().returns(Promise.resolve(true))
       },
       ledger: {
-        record: sandbox.stub().returns(Promise.resolve(true)),
-        get: sandbox.stub().returns(Promise.resolve(false))
+        sent: sandbox.stub().returns(Promise.resolve(true)),
+        isSent: sandbox.stub().returns(Promise.resolve(false))
       },
       postbox: {
         send: sandbox.stub().returns(Promise.resolve({ ok: true}))
@@ -52,7 +52,7 @@ describe('Given that the mail process flow is created',()=>{
         const flow = mailFlow.create(dependencies);
         return flow.process()
         .then((r)=>{
-          expect(dependencies.ledger.get.called).to.be.true;
+          expect(dependencies.ledger.isSent.called).to.be.true;
         });
       });
 
@@ -64,7 +64,7 @@ describe('Given that the mail process flow is created',()=>{
         .then((r)=>{
           expect(dependencies.gaurd.start.called).to.be.true;
           expect(dependencies.postbox.send.called).to.be.true;
-          expect(dependencies.ledger.record.called).to.be.true;
+          expect(dependencies.ledger.sent.called).to.be.true;
           expect(dependencies.queue.delete.called).to.be.true;
           expect(dependencies.gaurd.end.called).to.be.true;
         });
@@ -73,12 +73,14 @@ describe('Given that the mail process flow is created',()=>{
       describe('When the ledger says there is a record of email sent earlier',()=>{
         it('Should not attempt to send email again',()=>{
           let dependencies = getStanardDependencies(sandbox);
-          dependencies.queue.read.returns(Promise.resolve({ id: 123, message: 'mail'}));
+          const mailId = 123;
+          dependencies.queue.read.returns(Promise.resolve({ id: mailId, message: 'mail'}));
           const flow = mailFlow.create(dependencies);
-          dependencies.ledger.get.returns(Promise.resolve({ id: 123, message: 'mail', sent: true}));
+          dependencies.ledger.isSent.returns(Promise.resolve(true));
           return flow.process()
           .then((r)=>{
-            expect(dependencies.ledger.get.called).to.be.true;
+            expect(dependencies.ledger.isSent.called).to.be.true;
+            expect(dependencies.ledger.isSent.getCalls(0)[0].args[0]).to.be.equal(mailId);
             expect(dependencies.postbox.send.called).to.be.false;
             expect(dependencies.queue.delete.called).to.be.true;
           });
