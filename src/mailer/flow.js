@@ -19,9 +19,9 @@ function create(dependencies) {
   }
 
   function processMail(mail) {
-    return ledger.get(mail)
-    .then((record)=>{
-      if(record && record.sent) {
+    return ledger.isSent(mail.id)
+    .then((result)=>{
+      if(result) {
         log.info('Mail already sent by a worker; deleting the mail');
         return deleteMail(mail.id);
       }
@@ -46,7 +46,7 @@ function create(dependencies) {
       if(!receipt.ok) {
         log.error('Postbox could not send mail');
       }
-      return ledger.record({id: mail.id, message: mail.message, sent: true});
+      return ledger.sent(mail.id);
     })
     .then(()=>{
       return deleteMail(mail.id);

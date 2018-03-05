@@ -1,12 +1,12 @@
-function record() {
+function sent() {
   return Promise.resolve(true);
 }
 
-function get() {
+function isSent() {
   return Promise.resolve(false);
 }
 
 module.exports = {
-  record: record,
-  get: get
+  sent: sent,
+  isSent: isSent
 }
