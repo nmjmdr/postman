@@ -19,13 +19,19 @@ function create(primary, secondary) {
   const send = (mail) =>{
     invokeFn([mail])
     .then((result)=>{
-      // result can indicate wheter it used primary or secondary
-      // return result.ok = true
+      const usedFunction = (result.invoked === primary)? "primary" : "secondary";
+      log.debug("Used "+usedFunction+" to send mail");
+      return {
+        ok: true;
+      }
     })
     .catch((err)=>{
-      // both primary and secondary invocation failed or the input is malformed
-      // in any case we cannot do much, return result.ok = false
-    })
+      log.error("Could not send mail using both primary or secondary!");
+      log.error(err);
+      return {
+        ok: false
+      }
+    });
   }
   return {
     send: send
