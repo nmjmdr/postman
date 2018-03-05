@@ -15,6 +15,8 @@ const content = new s.object({
 const mailMessage = new s.object({
   to: s.array({min: 1, max: MaxEmailsInTo, of: email}),
   from: email,
+  cc: s.optional(s.array({min: 0, max: MaxEmailsInTo, of: email})),
+  bcc: s.optional(s.array({min: 0, max: MaxEmailsInTo, of: email})),
   subject: s.string(),
   content: s.array({of: content})
 });

@@ -15,6 +15,8 @@ function probePolicy(stats) {
 }
 
 function create(primary, secondary) {
+  //TO DO: !!! have to do a way to hanle non 500 errors, something
+  // wrong with the input
   const invokeFn = circuitbreaker.create(primary, secondary, probePolicy);
   const send = (mail) =>{
     return invokeFn([mail])

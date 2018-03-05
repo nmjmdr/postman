@@ -20,6 +20,9 @@
     "biguint-format": "^1.0.0",
     "bunyan": "^1.8.12",
     "flake-idgen": "^1.1.0",
+    "form-data": "^2.3.2",
+    "mailgun-js": "^0.16.0",
+    "request": "^2.83.0",
     "restify": "^6.3.4",
     "strummer": "^2.4.4"
   },

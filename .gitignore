@@ -5,6 +5,9 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# custom files
+./src/local-test-console.js
+
 # Runtime data
 pids
 *.pid
