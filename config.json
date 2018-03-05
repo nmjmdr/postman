@@ -1,0 +1,21 @@
+{
+  "queue": {
+    "name": "mail-queue",
+    "type": "inmemory-queue",
+    "visiblityTimeout": 4000
+  },
+
+  "api": {
+    "port": 8901,
+    "name": "send-mail-api",
+    "apiInstanceId": 1
+  },
+
+  "providers": {
+    "mailgun": {
+      "baseUrl": "https://api.mailgun.net/v3/",
+      "key": "key-fbbc5ef0448a59f54f34fa237a02d16d",
+      "domain": "sandboxfafaad9efc0c422eb9743d99f116d3d4.mailgun.org"
+    }
+  }
+}
