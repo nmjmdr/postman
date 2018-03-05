@@ -1,12 +1,15 @@
-function sent() {
-  return Promise.resolve(true);
-}
 
-function isSent() {
-  return Promise.resolve(false);
+function create() {
+  return {
+    sent: ()=>{
+      return Promise.resolve(true);
+    },
+    isSent: ()=>{
+      return Promise.resolve(false);
+    }
+  }
 }
 
 module.exports = {
-  sent: sent,
-  isSent: isSent
+  create: create
 }
