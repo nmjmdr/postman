@@ -17,7 +17,10 @@ function create(key, url) {
       request(options,(err, res, body)=>{
         console.log(res.statusCode)
         if(err || res.statusCode !== 202) {
-          const error = err? err : ("Status code: "+res.statusCode+ " Details: "+res.body);
+          const error = {
+            err : (err? err : ("Status code: "+res.statusCode+ " Details: "+res.body)),
+            code: res.statusCode
+          }
           reject(error);
           return;
         }
@@ -26,8 +29,14 @@ function create(key, url) {
     });
   }
 
+  function isUnavailableError(err) {
+    console.log(err);
+    return true;
+  }
+
   return {
-    send: send
+    send: send,
+    isUnavailableError: isUnavailableError
   }
 }
 
