@@ -1,7 +1,11 @@
-function safeInvoke(fn1, fn2, args) {
+function safeInvoke(fn1, fn2, args, isUnavailableError) {
   return invokeFunction(fn1, args)
   .catch((err)=>{
-    return invokeFunction(fn2, args)
+    if(isUnavailableError(err, fn1)) {
+      return invokeFunction(fn2, args)
+    } else {
+      throw err;
+    }
   });
 }
 
@@ -19,7 +23,7 @@ function shouldFlip(usedFn, fn, alternate) {
   return (usedFn === fn)? fn : alternate;
 }
 
-function create(primary, secondary, probePolicy) {
+function create(primary, secondary, probePolicy, isUnavailableError) {
   let fn = primary;
   let stats = {
     callsToSecondary: 0
@@ -41,7 +45,7 @@ function create(primary, secondary, probePolicy) {
       alternate = secondary;
     }
 
-    return safeInvoke(fn, alternate, args)
+    return safeInvoke(fn, alternate, args, isUnavailableError)
     .then((result)=>{
       computeStats(result.invoked, fn);
       fn = shouldFlip(result.invoked, fn, alternate);

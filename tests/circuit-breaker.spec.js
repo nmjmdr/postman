@@ -18,6 +18,8 @@ describe('Given circuit-breaker',()=>{
         const secondary = sandbox.stub().returns(Promise.resolve(secondaryReturn));
         const cb = circuitbreaker.create(primary, secondary, (stats)=>{
           return false
+        },(err, fnUsed)=>{
+          return true;
         });
 
         return cb([1])
@@ -28,7 +30,7 @@ describe('Given circuit-breaker',()=>{
       })
     });
 
-    describe('Then invoked, with primary having errors',()=>{
+    describe('Then invoked, with primary having service unavailable errors',()=>{
       it('Should invoke the secondary',()=>{
         const primaryReturn = 100;
         const secondaryReturn = 200;
@@ -36,6 +38,8 @@ describe('Given circuit-breaker',()=>{
         const secondary = sandbox.stub().returns(Promise.resolve(secondaryReturn));
         const cb = circuitbreaker.create(primary, secondary, (stats)=>{
           return false
+        },(err, fnUsed)=>{
+          return true;
         });
 
         return cb([1])
@@ -52,6 +56,8 @@ describe('Given circuit-breaker',()=>{
           const secondary = sandbox.stub().returns(Promise.reject("Error"));
           const cb = circuitbreaker.create(primary, secondary, (stats)=>{
             return false
+          },(err, fnUsed)=>{
+            return true;
           });
 
           return cb([1])
@@ -73,6 +79,8 @@ describe('Given circuit-breaker',()=>{
           const secondary = sandbox.stub().returns(Promise.resolve(secondaryReturn));
           const cb = circuitbreaker.create(primary, secondary, (stats)=>{
             return false
+          },(err,fnUsed)=>{
+            return true;
           });
 
           let promises = [];
@@ -118,6 +126,8 @@ describe('Given circuit-breaker',()=>{
           }
           const cb = circuitbreaker.create(primary, secondary, (stats)=>{
             return false
+          },(err,fnUsed)=>{
+            return true;
           });
 
           let promises = [];
@@ -135,6 +145,25 @@ describe('Given circuit-breaker',()=>{
 
           return Promise.all(promises);
         })
+      });
+    });
+
+    describe('Then invoked, with primary having NOT as service unavailable errors',()=>{
+      it('Should reject',()=>{
+        const primaryReturn = 100;
+        const secondaryReturn = 200;
+        const primary = sandbox.stub().returns(Promise.reject("Error"));
+        const secondary = sandbox.stub().returns(Promise.resolve(secondaryReturn));
+        const cb = circuitbreaker.create(primary, secondary, (stats)=>{
+          return false
+        },(err, fnUsed)=>{
+          return false;
+        });
+
+        return cb([1])
+        .catch((err)=>{
+          expect(err).to.exist;
+        });
       });
     });
 
@@ -156,6 +185,8 @@ describe('Given circuit-breaker',()=>{
             const secondary = sandbox.stub().returns(Promise.resolve(secondaryReturn));
             const cb = circuitbreaker.create(primary, secondary, (stats)=>{
               return stats.callsToSecondary > 1;
+            },(err, fnUsed)=>{
+              return true;
             });
 
             let promises = [];
@@ -183,6 +214,8 @@ describe('Given circuit-breaker',()=>{
             const secondary = sandbox.stub().returns(Promise.resolve(secondaryReturn));
             const cb = circuitbreaker.create(primary, secondary, (stats)=>{
               return stats.callsToSecondary > 1;
+            },(err, fnUsed)=>{
+              return true;
             });
 
             let promises = [];

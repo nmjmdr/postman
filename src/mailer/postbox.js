@@ -15,20 +15,22 @@ function probePolicy(stats) {
 }
 
 function create(primary, secondary) {
-  //TO DO: !!! have to do a way to hanle non 500 errors, something
-  // wrong with the input
-  const invokeFn = circuitbreaker.create(primary, secondary, probePolicy);
+  const invokeFn = circuitbreaker.create(primary.fn, secondary.fn, probePolicy,(err, fnUsed)=>{
+    const isUnavailableError = (fnUsed === primary.fn)? primary.isUnavailableError : secondary.isUnavailableError;
+    return isUnavailableError(err);
+  });
+
   const send = (mail) =>{
     return invokeFn([mail])
     .then((result)=>{
-      const usedFunction = (result.invoked === primary)? "primary" : "secondary";
+      const usedFunction = (result.invoked === primary.fn)? "primary" : "secondary";
       log.debug("Used "+usedFunction+" to send mail");
       return {
         ok: true
       }
     })
     .catch((err)=>{
-      log.error("Could not send mail using both primary or secondary!");
+      log.error("Could not send mail using both primary or secondary");
       log.error(err);
       return {
         ok: false
