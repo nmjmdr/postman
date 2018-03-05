@@ -3,7 +3,7 @@ const expect = chai.expect;
 const sinon = require('sinon');
 const queue = require('../../src/queue/inmemory-queue');
 
-describe('Given im-memory queue',()=>{
+describe('Given inmemory queue',()=>{
 
   let clock;
   beforeEach(()=>{
