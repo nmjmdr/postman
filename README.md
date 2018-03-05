@@ -22,6 +22,13 @@ A side effect of this goal, is that it should be possible to easily run and debu
 ### Design
 ![Design](https://raw.githubusercontent.com/nmjmdr/postman/master/screenshots/Design.png)
 
+#### Core Idea
+1. The code idea is to have a set of workers fetch mails that need to delivered and pass them the providers. 
+2. In case the worker faces an issue sending the mail one provider, it needs to use an alternative.
+      2.a. If an error has occured recently in using a provider, there is a very good probablity that it might continue to fail for the next few calls.
+      2.b Thus it is essential for the worker to continue to use the provider that works currently. 
+      2.c. It could try and attempt 
+
 
 ### Topics to explore further:
 1. Multi queues to scale the queue (http://arxiv.org/pdf/1411.1209.pdf)
