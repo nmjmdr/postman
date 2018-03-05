@@ -5,12 +5,13 @@ function create(dependencies) {
   const postbox = dependencies.postbox;
   const ledger = dependencies.ledger;
   const gaurd = dependencies.gaurd;
+  const workerId = dependencies.workerId;
 
-  function process(assignedTo) {
-    return queue.read(assignedTo)
+  function process() {
+    return queue.read(workerId)
     .then((message)=>{
       if(!message) {
-        log.debug('No messages to process, returning');
+        log.info('No messages to process, returning');
         return;
       }
       return processMail(message);
@@ -22,14 +23,14 @@ function create(dependencies) {
     .then((record)=>{
       if(record && record.sent) {
         log.info('Mail already sent by a worker; deleting the mail');
-        return deleteMail(mail)
+        return deleteMail(mail.id);
       }
       return sendMail(mail);
     });
   }
 
-  function deleteMail(mail) {
-    return queue.delete(mail)
+  function deleteMail(mailId) {
+    return queue.delete(mailId, workerId)
     .catch((err)=>{
       log.error('Could not delete message after sending mail');
       return;
@@ -38,15 +39,21 @@ function create(dependencies) {
 
   function sendMail(mail) {
     return gaurd.start()
-    .then(()=>postbox.send(mail))
+    .then(()=> {
+      return postbox.send(mail)
+    })
     .then((receipt)=>{
       if(!receipt.ok) {
         log.error('Postbox could not send mail');
       }
       return ledger.record({id: mail.id, message: mail.message, sent: true});
     })
-    .then(()=>deleteMail(mail))
-    .then(()=>gaurd.end());
+    .then(()=>{
+      return deleteMail(mail.id);
+    })
+    .then(()=> {
+      return gaurd.end()
+    });
   }
 
   return {

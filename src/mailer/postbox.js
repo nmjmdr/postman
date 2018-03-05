@@ -1,5 +1,5 @@
-// This must use cicruit breaker
-
+const log = require('../log');
+const circuitbreaker = require('../circuit-breaker');
 const MaxCallsToSecondaryBeforeProbing = 10;
 
 function toss() {
@@ -15,14 +15,14 @@ function probePolicy(stats) {
 }
 
 function create(primary, secondary) {
-  const invokeFn = cicruitbreaker.create(primary, secondary, probePolicy);
+  const invokeFn = circuitbreaker.create(primary, secondary, probePolicy);
   const send = (mail) =>{
-    invokeFn([mail])
+    return invokeFn([mail])
     .then((result)=>{
       const usedFunction = (result.invoked === primary)? "primary" : "secondary";
       log.debug("Used "+usedFunction+" to send mail");
       return {
-        ok: true;
+        ok: true
       }
     })
     .catch((err)=>{

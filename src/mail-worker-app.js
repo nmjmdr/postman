@@ -21,5 +21,5 @@ process.on('SIGTERM', () => {
   log.warn('SIGTERM received');
   mailer.safeExit(0);
 });
-
-mailer.work();
+// Need to do mailer.create here first
+// then mailer.work();

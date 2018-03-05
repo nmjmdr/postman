@@ -18,7 +18,7 @@ function curry(queue) {
     });
 
     if(!item) {
-      return null;
+      return Promise.resolve(null);
     }
 
     item.assignedTo = assignedTo;
