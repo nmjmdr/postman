@@ -20,9 +20,9 @@ function create(apiKey, domain) {
     console.log(err);
     return true;
   }
-  
+
   return {
-    send: send,
+    fn: send,
     isUnavailableError: isUnavailableError
   }
 }

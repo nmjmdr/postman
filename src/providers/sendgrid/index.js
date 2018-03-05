@@ -35,7 +35,7 @@ function create(key, url) {
   }
 
   return {
-    send: send,
+    fn: send,
     isUnavailableError: isUnavailableError
   }
 }

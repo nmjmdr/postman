@@ -15,6 +15,8 @@ function probePolicy(stats) {
 }
 
 function create(primary, secondary) {
+  console.log(primary);
+  console.log(secondary);
   const invokeFn = circuitbreaker.create(primary.fn, secondary.fn, probePolicy,(err, fnUsed)=>{
     const isUnavailableError = (fnUsed === primary.fn)? primary.isUnavailableError : secondary.isUnavailableError;
     return isUnavailableError(err);

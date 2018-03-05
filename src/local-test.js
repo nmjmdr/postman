@@ -23,15 +23,7 @@ console.log(sendgrid, mailgun);
 
 const configuration = {
   queue: queueFactory.get(config.queue),
-  postbox: postbox.create({
-      fn: sendgrid.send,
-      isUnavailableError: sendgrid.isUnavailableError
-    },
-    {
-      fn: mailgun.send,
-      isUnavailableError: mailgun.isUnavailableError
-    }
-  ),
+  postbox: postbox.create(sendgrid, mailgun),
   ledger:  require('./ledger/inmemory-ledger').create(),
   schedule: 5000,
   workerId: 'single-worker'
