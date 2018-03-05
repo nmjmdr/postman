@@ -18,9 +18,6 @@ validationEnvironmentVars();
 const sendgrid = sg.create(process.env.SENDGRID_KEY, config.providers.sendgrid.url);
 const mailgun = mg.create(process.env.MAILGUN_KEY, config.providers.mailgun.domain);
 
-
-console.log(sendgrid, mailgun);
-
 const configuration = {
   queue: queueFactory.get(config.queue),
   postbox: postbox.create(sendgrid, mailgun),

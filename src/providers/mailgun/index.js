@@ -10,6 +10,7 @@ function create(apiKey, domain) {
           reject(error);
           return;
         }
+        console.log(body)
         resolve(body);
         return;
       });
@@ -17,9 +18,10 @@ function create(apiKey, domain) {
 
   }
 
-  function isUnavailableError(err) {
-    console.log(err);
-    return true;
+  function isUnavailableError(error) {
+    let isUnavailable = (error.code && (error.code == 'ENOTFOUND' || error.code == 'ETIMEDOUT'));
+    isUnavailable = isUnavailable || (error.code && error.code >= 500);
+    return isUnavailable;
   }
 
   return {

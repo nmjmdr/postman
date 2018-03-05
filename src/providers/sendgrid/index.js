@@ -15,23 +15,23 @@ function create(key, url) {
     options.body = toSendgridMail(mail);
     return new Promise((resolve, reject)=>{
       request(options,(err, res, body)=>{
-        console.log(res.statusCode)
-        if(err || res.statusCode !== 202) {
+        if(err || (res && res.statusCode !== 202)) {
           const error = {
-            err : (err? err : ("Status code: "+res.statusCode+ " Details: "+res.body)),
-            code: res.statusCode
+            err : err,
+            code: (res? res.statusCode : null)
           }
           reject(error);
           return;
         }
-        resolve(res.body)
+        resolve(res.statusCode);
       });
     });
   }
 
-  function isUnavailableError(err) {
-    console.log(err);
-    return true;
+  function isUnavailableError(error) {
+    let isUnavailable = (error.err && (error.err.code == 'ENOTFOUND') || (error.err && error.err.code == 'ETIMEDOUT'));
+    isUnavailable = isUnavailable || (error.code && error.code >= 500);
+    return isUnavailable;
   }
 
   return {
