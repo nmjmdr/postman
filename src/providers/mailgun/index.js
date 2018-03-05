@@ -15,8 +15,15 @@ function create(apiKey, domain) {
       });
     });
   }
+
+  function isUnavailableError(err) {
+    console.log(err);
+    return true;
+  }
+  
   return {
-    send: send
+    send: send,
+    isUnavailableError: isUnavailableError
   }
 }
 

@@ -10,6 +10,7 @@ function safeInvoke(fn1, fn2, args, isUnavailableError) {
 }
 
 function invokeFunction(fn, args) {
+  console.log("Here: ",fn)
   return fn(...args)
   .then((result)=>{
     return {
