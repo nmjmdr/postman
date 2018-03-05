@@ -14,7 +14,7 @@
   "providers": {
     "mailgun": {
       "baseUrl": "https://api.mailgun.net/v3/",
-      "domain": "sandboxfafaad9efc0c422eb9743d99f116d3d4.mailgun.org"
+      "domain": "sandbox13c925da8dcb42efbaae384e0f7c2c8e.mailgun.org"
     },
 
     "sendgrid": {
