@@ -1,7 +1,7 @@
 const idgenLib = require('../../../utils/id-gen');
 const apiConfig = require('../../../../config').api;
 const datacentreId = apiConfig? apiConfig['data-centre-id'] : null;
-const apiInstanceId = apiConfig? apiConfig['api-instance-id'] : null;
+const apiInstanceId = apiConfig? apiConfig['apiInstanceId'] : null;
 const idgen = idgenLib.create(datacentreId, apiInstanceId);
 
 function create(queue) {

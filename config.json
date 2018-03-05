@@ -1,6 +1,8 @@
 {
-  "worker": {
-    "queue-type": "simulated-sqs"
+  "queue": {
+    "name": "mail-queue",
+    "type": "inmemory-queue",
+    "visiblity-timeout": 4000
   },
 
   "api": {
