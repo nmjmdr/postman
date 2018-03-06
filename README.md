@@ -64,8 +64,29 @@ Workers can be deployed as standalone processes or as serverless functions (Ex: 
 ##### Making sure workers are reliable
 1. It is critical that the workers are fault tolerant and do not exit when it is attempting to send a email. Of course there is very little a worker can do when it is being shutdown forcibily. It can still attempt to try and finish the task in progress.
 To accomplish this the project employes what is called as a "gaurd". 
+
 ###### Gaurd
-A gaurd is like a critical section which the worker can use to....
+A gaurd is like a critical section which the worker can use to keep track of things that are `in progress`. If things are in progress and the worker receives a SIGNINT, it can try and wait until things are finished.
+I have not implemented this yet in the solution. This needs to be added.
+
+###### Ledger - an attempt to prevent sending duplicate emails
+Assume that there just before the worker posts a mail for delivery, it checks with a store to see if that mail has already been sent. The prescence of such a store would reduce of the occurance of sending duplciate mails (either because a worker died before deleting a mail (but after sending it), or there are duplciate messages on the queues (when the queue does not guarantee only once delivery).
+
+Such a store needs to support atomic insert and lookup. It could get its data from '`proxy` that observes all the requests and responses from workers to providers.
+
+This ledger could prevent (all though not all) cases of duplicate messages.
+
+The ledger is currently implemented as a in-memory solution, but ideally is implemented using a datbase such as postgres.
+
+###### What does worker `flow` look like?
+1. Start the gaurd
+2. Read from queue 
+3. Has the ledger seen this mail? is that mail already marked as delivered? (Identified by id: unique flake id)
+4. If yes, then delete the mail from the queue, return
+5. If no, then send it (using the circuit breaker)
+6. Mark the mail as sent in ledger. (This could be done by a proxy later on)
+7. delete the email
+8. End the gaurd
 
 ### Topics to explore further:
 1. Multi queues to scale the queue (http://arxiv.org/pdf/1411.1209.pdf)
