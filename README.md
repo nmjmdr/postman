@@ -89,6 +89,7 @@ The ledger is currently implemented as a in-memory solution, but ideally is impl
 8. End the gaurd
 
 #### Deployment
+The solution can be deployed over AWS, with SQS as the queues. Ledger stored in postgres (or redis). Workers could be deployed as lambda services.
 
 ### Topics to explore further:
 1. Multi queues to scale the queue (http://arxiv.org/pdf/1411.1209.pdf)
