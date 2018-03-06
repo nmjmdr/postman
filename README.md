@@ -1,4 +1,4 @@
-# postman
+# Postman
 Sends emails reliably (supports failover) using services such as Sendgrid and Mailgun  
 
 ### Design goals:
@@ -49,9 +49,14 @@ This results in the data loss which we are aiming to avoid. To overcome this the
 1. Ability to read from the queue without deleting the item, but at the same time the item not being availble for other workers.
 2. We can treat `item read by a worker and not being available for other workers` as an item being "assigned" to a worker
 3. We need an ability for this "assignment" to expire. (aka visiblity timeout)
+4. An ability to move an "item" to a `dead-queue` after "n" trials by workers. This effectively takes cares of "poisoned messages" which have errors that cannot be recovered from.
 
 ##### Candidates for implementation of such a queue
+1. AWS SQS is a natural choice as it supports all the features that we need "out of the box".
+2. Redis Queue. Reference: https://redis.io/commands/rpoplpush Sub-section: _Pattern : Reliable queue_
+3. In memory queue: This is to used ONLY on local machines for development and debugging. 
 
+In a distributed scenario we would have to use AWS SQS or Redis Queue. _The important idea is that the solution encapsulates the queue in such way that any of implementations can be used (as long as they support the required features).
 
 #### Workers:
 Workers can be deployed as standalone processes or as serverless functions (Ex: AWS lambda).
