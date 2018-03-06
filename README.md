@@ -88,8 +88,16 @@ The ledger is currently implemented as a in-memory solution, but ideally is impl
 7. delete the email
 8. End the gaurd
 
+#### Deployment
+
 ### Topics to explore further:
 1. Multi queues to scale the queue (http://arxiv.org/pdf/1411.1209.pdf)
+A single queue could be subject to contention when the workers tries to get the next mail to send. Instead we could maintain multiple queues to be able scale the solution.
+
 2. Extending circuit breaker to monitor the health of worker
-3. Distributed config management - such as Zookeeper
+Is the worker consuming messages at a lot lesser rate than the average (depending on the number of messages outstanding in the queue) 
+
 4. Potential use of proxy to determine if a mail has already been sent
+A proxy (Ex: nginix reverse proxy) could correlate requests and responses (do any of the providers support this?)
+
+
