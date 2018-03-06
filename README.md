@@ -2,7 +2,38 @@
 Sends emails reliably (supports failover) using services such as Sendgrid and Mailgun  
 
 ### Screenshots:
-#### Using sendgrid as primary and mailgun as secondry in circuit breaker.
+#### Using sendgrid as primary and mailgun as secondry in circuit breaker:
+_Queuing emails using RESTFul API endpoint_:
+```
+POST: http://<server>:<port>/mail
+
+[
+	{
+		"to": [{"email": "narasimha.gm@gmail.com"}],
+		"from": {"email": "postman.p@protonmail.com"},
+		"subject": "hello there",
+		"content": [ {
+			"type": "text/plain",
+			"value": "hello there, how are you doing?"
+		}
+		]
+	},
+	
+	{
+		"to": [{"email": "narasimha.gm@gmail.com"}],
+		"from": {"email": "postman.p@protonmail.com"},
+		"subject": "hello there",
+		"content": [ {
+			"type": "text/plain",
+			"value": "hello there, great, how are you doing?"
+		}
+		]
+	}
+]
+````
+
+_Worker sends email using sendgrid_:
+
 
 ### Design goals:
 
