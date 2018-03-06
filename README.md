@@ -53,10 +53,38 @@ _Emails Received:_
 ### Testing Failover:
 I have employed two fake providers (`Fake provider - Lamda` and `Fake provider - Delta`) which fail to send message every second request.
 
-These are configured as Primary and Secondary in the cirrcuit-breaker (more about circuit-breaker below). In spite of these two functions failing for every second call, _all the mails are delivered._ 
+These are configured (deliberatly) as Primary and Secondary in the cirrcuit-breaker (more about circuit-breaker below). In spite of these two functions failing for every second call, _all the mails are delivered._ 
 
 _The point to note is that circuit breaker keeps switching to the provider that works:_
+(The request and response to RESTful API remain same, but four emails are queued)
+Below is the screenshot of fake providers working in tandem:
 ![Failover](https://raw.githubusercontent.com/nmjmdr/postman/master/screenshots/Fakes-Failures.png)
+
+Whats happening above:
+_1. Fake Provider *Lamda: sent mail - 0x587e6d1522401000_
+Sending of mail with id: 0x587e6d1522401000 succeeds with _Fake Provider *Lamda_ as the provider
+
+_2. Fake Provider *Lamda: failed to send mail - 0x587e6d1522801000_
+Sending of second mail with id: 0x587e6d1522801000 fails with _Fake Provider *Lamda_ as the provider (second request fails).
+
+Now circuit breaker tries using the secondary _Fake Provider *Delta_ as provider and succeeds in sending 0x587e6d1522801000
+_3. Fake Provider *Delta: sent mail - 0x587e6d1522801000_ 
+
+Now it starts using _Fake Provider *Delta_ as the primary and attempts to send the next mail (id = 0x587e6d1522c01000) using as that as the provider.
+But as it is the second call to _Fake Provider *Delta_ it fails:
+
+_ Fake Provider *Delta: failed to send mail - 0x587e6d1522c01000_
+
+_4. It then attempts to fall back on prrimary _Fake Provider *Lamda_ and succeeds:
+_Fake Provider *Lamda: sent mail - 0x587e6d1522c01000_
+
+The same situation is repeated for the last mail that has to be delivered:
+```
+Fake Provider *Lamda: failed to send mail - 0x587e6d1522c01001
+------------------------------------------------
+Fake Provider *Delta: sent mail - 0x587e6d1522c01001
+```
+
 
 ### Design goals:
 
