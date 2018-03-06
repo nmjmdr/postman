@@ -33,7 +33,10 @@ POST: http://<server>:<port>/mail
 ````
 
 _Worker sends email using sendgrid_:
+![MailUsingSendgrid](https://raw.githubusercontent.com/nmjmdr/postman/master/screenshots/SentMailSendGrid.png)
 
+_Emails Received:_
+[!Mails](https://raw.githubusercontent.com/nmjmdr/postman/master/screenshots/Mail.png)
 
 ### Design goals:
 
