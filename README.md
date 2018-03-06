@@ -56,8 +56,7 @@ I have employed two fake providers (`Fake provider - Lamda` and `Fake provider -
 These are configured as Primary and Secondary in the cirrcuit-breaker (more about circuit-breaker below). In spite of these two functions failing for every second call, _all the mails are delivered._ 
 
 _The point to note is that circuit breaker keeps switching to the provider that works:_
-
-
+![Failover](https://raw.githubusercontent.com/nmjmdr/postman/master/screenshots/Fakes-Failures.png)
 
 ### Design goals:
 
