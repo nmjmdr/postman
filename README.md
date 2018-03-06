@@ -245,4 +245,6 @@ A proxy (Ex: nginix reverse proxy) could correlate requests and responses (do an
 
 5. Tracking of queued messages (queued on providers) - next step
 
+Appendix:
+Flake ids http://yellerapp.com/posts/2015-02-09-flake-ids.html
 
