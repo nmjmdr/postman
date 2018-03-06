@@ -1,6 +1,9 @@
 # Postman
 Sends emails reliably (supports failover) using services such as Sendgrid and Mailgun  
 
+### Screenshots:
+#### Using sendgrid as primary and mailgun as secondry in circuit breaker.
+
 ### Design goals:
 
 1. Reliablity
@@ -88,8 +91,33 @@ The ledger is currently implemented as a in-memory solution, but ideally is impl
 7. delete the email
 8. End the gaurd
 
+#### RESTFul API
+We exponse the following RESTFul API to post messages for delivery:
+```
+POST: http://<server-url>/mail
+
+Body:
+content-type: application/json
+content:
+
+[
+	{
+		"to": [{"email": "narasimha.gm@gmail.com"}],
+		"from": {"email": "postman.p@protonmail.com"},
+		"subject": "hello there",
+		"content": [ {
+			"type": "text/plain",
+			"value": "hello there, how are you doing?"
+		}
+		]
+	}
+]
+```
+
 #### Deployment
 The solution can be deployed over AWS, with SQS as the queues. Ledger stored in postgres (or redis). Workers could be deployed as lambda services.
+
+---- Tracking of queued messages (queued on providers) - next step
 
 ### Topics to explore further:
 1. Multi queues to scale the queue (http://arxiv.org/pdf/1411.1209.pdf)
