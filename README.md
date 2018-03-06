@@ -91,7 +91,7 @@ The ledger is currently implemented as a in-memory solution, but ideally is impl
 7. delete the email
 8. End the gaurd
 
-#### RESTFul API
+#### RESTFul API to queue the mails
 We exponse the following RESTFul API to post messages for delivery:
 ```
 POST: http://<server-url>/mail
@@ -112,6 +112,32 @@ content:
 		]
 	}
 ]
+```
+The format supports multiple mails in a single request. The request is valdiated using a JSON validation libraray called strummer (https://www.npmjs.com/package/strummer).
+Valdations are done against the following definition:
+```
+const MaxBatchSize = 10;
+const MaxEmailsInTo = 100;
+
+const email = new s.object({
+  email: new s.email()
+});
+
+const content = new s.object({
+  type: new s.enum({values: ['text/plain']}),
+  value: s.string()
+})
+
+const mailMessage = new s.object({
+  to: s.array({min: 1, max: MaxEmailsInTo, of: email}),
+  from: email,
+  cc: s.optional(s.array({min: 0, max: MaxEmailsInTo, of: email})),
+  bcc: s.optional(s.array({min: 0, max: MaxEmailsInTo, of: email})),
+  subject: s.string(),
+  content: s.array({of: content})
+});
+
+const requestPayload = new s.array({min: 1, max: MaxBatchSize, of: mailMessage});
 ```
 
 #### Deployment
