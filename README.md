@@ -39,6 +39,20 @@ _Point 2 calls for the use of circuit breaker_. The solution includes a circuit 
 
 The circuit breaker developed in this solution can be used as a library across other projects. It has been unit tested with an attempt to cover all the scenarios.
 
+#### Queue
+##### Queue should support `read` and `visiblity timeout`
+One of the problems with above approach is this:
+1. Assume a worker fetches an item from the queue. The item is deleted (dequeued).
+2. The worker is unable to send the message
+
+This results in the data loss which we are aiming to avoid. To overcome this the queue should support:
+1. Ability to read from the queue without deleting the item, but at the same time the item not being availble for other workers.
+2. We can treat `item read by a worker and not being available for other workers` as an item being "assigned" to a worker
+3. We need an ability for this "assignment" to expire. (aka visiblity timeout)
+
+##### Candidates for implementation of such a queue
+
+
 #### Workers:
 Workers can be deployed as standalone processes or as serverless functions (Ex: AWS lambda).
 
