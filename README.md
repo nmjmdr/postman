@@ -177,7 +177,13 @@ const requestPayload = new s.array({min: 1, max: MaxBatchSize, of: mailMessage})
 #### Deployment
 The solution can be deployed over AWS, with SQS as the queues. Ledger stored in postgres (or redis). Workers could be deployed as lambda services.
 
----- Tracking of queued messages (queued on providers) - next step
+### Things not done yet:
+1. Code to use SQS, Redis as queues
+2. Deployment of worker as lamda function
+3. Ledger using a Database such postgres (or redis)
+4. Implement `gaurd` functinality
+
+_Next Step: Deploy on AWS_
 
 ### Topics to explore further:
 1. Multi queues to scale the queue (http://arxiv.org/pdf/1411.1209.pdf)
@@ -188,5 +194,7 @@ Is the worker consuming messages at a lot lesser rate than the average (dependin
 
 4. Potential use of proxy to determine if a mail has already been sent
 A proxy (Ex: nginix reverse proxy) could correlate requests and responses (do any of the providers support this?)
+
+5. Tracking of queued messages (queued on providers) - next step
 
 
