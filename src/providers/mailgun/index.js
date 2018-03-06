@@ -1,4 +1,5 @@
 const toMgMail = require('./mailgun-mail');
+const log = require('../../log');
 
 function create(apiKey, domain) {
   const mailgun = require('mailgun-js')({apiKey: apiKey, domain: domain});
@@ -10,7 +11,7 @@ function create(apiKey, domain) {
           reject(error);
           return;
         }
-        console.log(body)
+        log.info('Sent mail: '+mail.id+ ' using mailgun')
         resolve(body);
         return;
       });

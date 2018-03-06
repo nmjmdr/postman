@@ -1,5 +1,6 @@
 const request = require('request');
 const toSendgridMail = require('./sendgrid-mail');
+const log = require('../../log');
 
 function create(key, url) {
   const options = {
@@ -23,6 +24,7 @@ function create(key, url) {
           reject(error);
           return;
         }
+        log.info('Sent mail: '+mail.id+ ' using sendgrid');
         resolve(res.statusCode);
       });
     });
