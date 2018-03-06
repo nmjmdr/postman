@@ -32,11 +32,32 @@ POST: http://<server>:<port>/mail
 ]
 ````
 
+Response:
+```
+{
+    "queued": true,
+    "tracking-ids": [
+        "0x587e6d1522401000",
+        "0x587e6d1522801000",
+    ]
+}
+```
+The response includes the ids (flake ids) assigned to the mails by the RESTFul apis. (In future these ids could be used to track the email delivery status).
+
 _Worker sends email using sendgrid_:
 ![MailUsingSendgrid](https://raw.githubusercontent.com/nmjmdr/postman/master/screenshots/SentMailSendGrid.png)
 
 _Emails Received:_
 ![Mails](https://raw.githubusercontent.com/nmjmdr/postman/master/screenshots/Mail.png)
+
+### Testing Failover:
+I have employed two fake providers (`Fake provider - Lamda` and `Fake provider - Delta`) which fail to send message every second request.
+
+These are configured as Primary and Secondary in the cirrcuit-breaker (more about circuit-breaker below). In spite of these two functions failing for every second call, _all the mails are delivered._ 
+
+_The point to note is that circuit breaker keeps switching to the provider that works:_
+
+
 
 ### Design goals:
 
