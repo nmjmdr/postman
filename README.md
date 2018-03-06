@@ -32,13 +32,15 @@ A side effect of this goal, is that it should be possible to easily run and debu
       2.d If yes, it can move to using provider A
 3. The workers can randomly select a provider as primary and other provider as secondary. This way there would be a good distribution of providers being used across workers.
 ```
-
+#### Circuit Breaker
 _Point 2 calls for the use of circuit breaker_. The solution includes a circuit breaker that can accomplish Point 2. It also includes a customizable functionality (injected as functions) to determine:
 1. When the probe (an attempt to see if the error is now resolved) should be carried out
 2. Determine if an encountered error is due to provider or something else (most commonly input errors)
 
+The circuit breaker developed in this solution can be used as a library across other projects. It has been unit tested with an attempt to cover all the scenarios.
 
-
+#### Workers:
+Workers can be deployed as standalone processes or as serverless functions (Ex: AWS lambda).
 
 ### Topics to explore further:
 1. Multi queues to scale the queue (http://arxiv.org/pdf/1411.1209.pdf)
