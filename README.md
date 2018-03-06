@@ -61,6 +61,12 @@ In a distributed scenario we would have to use AWS SQS or Redis Queue. _The impo
 #### Workers:
 Workers can be deployed as standalone processes or as serverless functions (Ex: AWS lambda).
 
+##### Making sure workers are reliable
+1. It is critical that the workers are fault tolerant and do not exit when it is attempting to send a email. Of course there is very little a worker can do when it is being shutdown forcibily. It can still attempt to try and finish the task in progress.
+To accomplish this the project employes what is called as a "gaurd". 
+###### Gaurd
+A gaurd is like a critical section which the worker can use to....
+
 ### Topics to explore further:
 1. Multi queues to scale the queue (http://arxiv.org/pdf/1411.1209.pdf)
 2. Extending circuit breaker to monitor the health of worker
