@@ -62,22 +62,22 @@ Below is the screenshot of fake providers working in tandem:
 
 Whats happening above is:
 ```
-_1. Fake Provider *Lamda: sent mail - 0x587e6d1522401000_
-Sending of mail with id: 0x587e6d1522401000 succeeds with _Fake Provider *Lamda_ as the provider
+1. Fake Provider *Lamda: sent mail - 0x587e6d1522401000
+Sending of mail with id: 0x587e6d1522401000 succeeds with "Fake Provider *Lamda" as the provider
 
-_2. Fake Provider *Lamda: failed to send mail - 0x587e6d1522801000_
-Sending of second mail with id: 0x587e6d1522801000 fails with _Fake Provider *Lamda_ as the provider (second request fails).
+2. Fake Provider *Lamda: failed to send mail - 0x587e6d1522801000
+Sending of second mail with id: 0x587e6d1522801000 fails with "Fake Provider *Lamda" as the provider (second request fails).
 
 Now circuit breaker tries using the secondary _Fake Provider *Delta_ as provider and succeeds in sending 0x587e6d1522801000
-_3. Fake Provider *Delta: sent mail - 0x587e6d1522801000_ 
+3. Fake Provider *Delta: sent mail - 0x587e6d1522801000_ 
 
-Now it starts using _Fake Provider *Delta_ as the primary and attempts to send the next mail (id = 0x587e6d1522c01000) using as that as the provider.
-But as it is the second call to _Fake Provider *Delta_ it fails:
+Now it starts using "Fake Provider *Delta" as the primary and attempts to send the next mail (id = 0x587e6d1522c01000) using as that as the provider.
+But as it is the second call to "Fake Provider *Delta" it fails:
 
-_ Fake Provider *Delta: failed to send mail - 0x587e6d1522c01000_
+ Fake Provider *Delta: failed to send mail - 0x587e6d1522c01000
 
-_4. It then attempts to fall back on prrimary _Fake Provider *Lamda_ and succeeds:
-_Fake Provider *Lamda: sent mail - 0x587e6d1522c01000_
+4. It then attempts to fall back on prrimary "Fake Provider *Lamda" and succeeds:
+Fake Provider *Lamda: sent mail - 0x587e6d1522c01000
 
 The same situation is repeated for the last mail that has to be delivered:
 
