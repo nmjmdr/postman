@@ -60,7 +60,8 @@ _The point to note is that circuit breaker keeps switching to the provider that 
 Below is the screenshot of fake providers working in tandem:
 ![Failover](https://raw.githubusercontent.com/nmjmdr/postman/master/screenshots/Fakes-Failures.png)
 
-Whats happening above:
+Whats happening above is:
+```
 _1. Fake Provider *Lamda: sent mail - 0x587e6d1522401000_
 Sending of mail with id: 0x587e6d1522401000 succeeds with _Fake Provider *Lamda_ as the provider
 
@@ -79,7 +80,7 @@ _4. It then attempts to fall back on prrimary _Fake Provider *Lamda_ and succeed
 _Fake Provider *Lamda: sent mail - 0x587e6d1522c01000_
 
 The same situation is repeated for the last mail that has to be delivered:
-```
+
 Fake Provider *Lamda: failed to send mail - 0x587e6d1522c01001
 ------------------------------------------------
 Fake Provider *Delta: sent mail - 0x587e6d1522c01001
