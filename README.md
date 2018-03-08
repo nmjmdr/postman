@@ -42,7 +42,7 @@ Response:
     ]
 }
 ```
-The response includes the ids (flake ids) assigned to the mails by the RESTFul apis. (In future these ids could be used to track the email delivery status).
+The response includes the ids (flake ids) assigned to the mails by the RESTFul api. (In future these ids could be used to track the email delivery status).
 
 _Worker sends email using sendgrid_:
 ![MailUsingSendgrid](https://raw.githubusercontent.com/nmjmdr/postman/master/screenshots/SentMailSendGrid.png)
